@@ -1,0 +1,22 @@
+/* A small type scale increase improves legibility without changing the layout. */
+:root{font-size:15px}
+.nav-item,.page-heading p,.data-strip,.toolbar label,.toolbar-note,.panel-head p,.legend,.metric-label,.metric-hint,.chart-tooltip,.table-wrap td,.toolbar select,.toolbar input,.sim-intro label,.sim-intro p,.sim-controls>label,.sim-controls small,.heatmap-toolbar,.heatmap-legend,.risk-intro p,.risk-intro b,.auth-form label,.auth-switch,.muted,.footer,.breadcrumbs,.period-tag,.status-pill,.button,.signal-copy b,.signal-copy small,.signal strong,.footnote{font-size:calc(1em + 1px)}
+.sidebar{transition:box-shadow .22s ease}
+.nav-item{transition:background-color .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
+.nav-item:hover{transform:translateX(3px)}
+.nav-item.active{box-shadow:inset 3px 0 #2b7651}
+.panel,.metric,.report-card,.risk-card,.source-card{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.panel:hover,.metric:hover,.report-card:hover,.risk-card:hover,.source-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px #173c2d0d;border-color:#dce8e0}
+.button,.icon-button,.heat-cell,.chart-click-row button,.risk-actions button,.text-button,.small-link,.all-signals{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease,color .18s ease,border-color .18s ease}
+.button:active,.icon-button:active,.risk-actions button:active{transform:scale(.97)}
+.icon-button:hover,.risk-actions button:hover{background:#f2f7f3;color:#246746;border-color:#cfe1d5}
+.chart-shell{animation:windlens-enter .42s cubic-bezier(.2,.7,.2,1) both}
+.metric-grid .metric:nth-child(2){animation-delay:35ms}.metric-grid .metric:nth-child(3){animation-delay:70ms}.metric-grid .metric:nth-child(4){animation-delay:105ms}
+.daily-col:hover{transform:translateY(-2px)}
+.heat-cell:hover{transform:scaleY(1.5) scaleX(1.04);box-shadow:0 2px 8px #183c2b26}
+.chart-tooltip{animation:windlens-tooltip .14s ease-out both}
+.signal:hover .signal-arrow{transform:translateX(3px);color:#2c805c}
+.signal-arrow{transition:transform .16s ease,color .16s ease}
+@keyframes windlens-enter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes windlens-tooltip{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
