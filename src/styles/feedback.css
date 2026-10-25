@@ -1,0 +1,4 @@
+.data-warning{margin:0 0 10px;padding:9px 11px;border:1px solid #f0dfbc;border-radius:5px;background:#fff9ed;color:#956a27;font-size:9px;line-height:1.45}
+/* Keep forecast values distinguishable when the two series are close together. */
+.line.forecast-line{stroke:#1f7251;stroke-width:2.8;stroke-dasharray:2 5;stroke-linecap:round;opacity:1}
+.legend-line.forecast{border-color:#1f7251;border-top-style:dashed}

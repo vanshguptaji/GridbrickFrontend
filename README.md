@@ -35,3 +35,29 @@ The backend currently has no account-authentication endpoints. The sign-in and s
 npm run lint
 npm run build
 ```
+
+## Source layout
+
+```text
+src/
+├── App.jsx                    # App state, data orchestration, and screen composition
+├── components/
+│   ├── layout/                 # Workspace shell, navigation, headers, status strip
+│   └── ui/                     # Shared chart, button, metric, panel, and icon
+├── features/                   # One folder and screen module per product section
+│   ├── auth/
+│   ├── overview/
+│   ├── explorer/
+│   ├── time-machine/
+│   ├── revisions/
+│   ├── confidence/
+│   ├── autopsy/
+│   ├── heatmap/
+│   ├── risk/
+│   ├── simulator/
+│   ├── market/
+│   ├── reviews/
+│   └── reports/
+├── lib/                        # API client, constants, formatting, demo data
+└── styles/                     # Base, layout, feature, chart, and responsive styles
+```
