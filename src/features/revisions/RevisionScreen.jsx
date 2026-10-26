@@ -1,5 +1,109 @@
-import { Chart, Metric, Panel } from '../../components/ui'
-import { demo } from '../../lib/demoData'
-import { n, shortDate } from '../../lib/format'
-export function RevisionScreen({ revisions }) { const data = revisions?.revisions || demo.slice(0, 24).map((r, i) => ({ interval_start: r.interval_start, earliest_mw: r.forecast_mw - 700 + i * 40, latest_mw: r.forecast_mw, net_revision_mw: 700 - i * 40, absolute_revision_mw: Math.abs(700 - i * 40), pct_revision: 6.4, total_revisions: 4 + i % 9, subsequent_improved_accuracy: i % 3 !== 0 }))
-  return <><div className="metric-grid compact"><Metric label="Intervals with versions" value={n(revisions?.total_intervals || 1488)} unit="" hint="Preserved publication history"/><Metric label="Large revisions" value={n(revisions?.large_revisions_count || 86)} unit="" hint="Above 800 MW" tone="negative"/><Metric label="Later forecast improved" value={n(revisions?.improved_count || 932)} unit="" hint="Compared to prior vintage" tone="positive"/><Metric label="Later forecast worsened" value={n(revisions?.worsened_count || 311)} unit="" hint="Compared to prior vintage"/></div><Panel title="Revision magnitude" subtitle="Absolute change from earliest to latest forecast · MW"><Chart rows={data.map(r => ({ actual_mw: r.earliest_mw, forecast_mw: r.latest_mw }))}/></Panel><Panel title="Forecast revision history" subtitle="Earliest and latest eligible publication for each interval"><div className="table-wrap"><table><thead><tr><th>Delivery interval</th><th>Earliest vintage</th><th>Latest vintage</th><th>Net revision</th><th>Change</th><th>Versions</th><th>Accuracy impact</th></tr></thead><tbody>{data.slice(0, 25).map((r, i) => <tr key={i}><td>{shortDate(r.interval_start)}</td><td>{n(r.earliest_mw)} MW</td><td>{n(r.latest_mw)} MW</td><td className={Number(r.net_revision_mw) >= 0 ? 'orange' : 'green'}>{Number(r.net_revision_mw) > 0 ? '+' : ''}{n(r.net_revision_mw)} MW</td><td>{n(r.pct_revision, 1)}%</td><td>{r.total_revisions}</td><td><span className={`status-pill ${r.subsequent_improved_accuracy ? 'good' : 'warn'}`}><i/>{r.subsequent_improved_accuracy ? 'Improved' : 'Worsened'}</span></td></tr>)}</tbody></table></div></Panel></> }
+import { Chart, Metric, Panel } from "../../components/ui";
+import { demo } from "../../lib/demoData";
+import { n, shortDate } from "../../lib/format";
+export function RevisionScreen({ revisions }) {
+  const data =
+    revisions?.revisions ||
+    demo
+      .slice(0, 24)
+      .map((r, i) => ({
+        interval_start: r.interval_start,
+        earliest_mw: r.forecast_mw - 700 + i * 40,
+        latest_mw: r.forecast_mw,
+        net_revision_mw: 700 - i * 40,
+        absolute_revision_mw: Math.abs(700 - i * 40),
+        pct_revision: 6.4,
+        total_revisions: 4 + (i % 9),
+        subsequent_improved_accuracy: i % 3 !== 0,
+      }));
+  return (
+    <>
+      <div className="metric-grid compact">
+        <Metric
+          label="Intervals with versions"
+          value={n(revisions?.total_intervals || 1488)}
+          unit=""
+          hint="Preserved publication history"
+        />
+        <Metric
+          label="Large revisions"
+          value={n(revisions?.large_revisions_count || 86)}
+          unit=""
+          hint="Above 800 MW"
+          tone="negative"
+        />
+        <Metric
+          label="Later forecast improved"
+          value={n(revisions?.improved_count || 932)}
+          unit=""
+          hint="Compared to prior vintage"
+          tone="positive"
+        />
+        <Metric
+          label="Later forecast worsened"
+          value={n(revisions?.worsened_count || 311)}
+          unit=""
+          hint="Compared to prior vintage"
+        />
+      </div>
+      <Panel
+        title="Revision magnitude"
+        subtitle="Absolute change from earliest to latest forecast · MW"
+      >
+        <Chart
+          rows={data.map((r) => ({
+            actual_mw: r.earliest_mw,
+            forecast_mw: r.latest_mw,
+          }))}
+        />
+      </Panel>
+      <Panel
+        title="Forecast revision history"
+        subtitle="Earliest and latest eligible publication for each interval"
+      >
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Delivery interval</th>
+                <th>Earliest vintage</th>
+                <th>Latest vintage</th>
+                <th>Net revision</th>
+                <th>Change</th>
+                <th>Versions</th>
+                <th>Accuracy impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.slice(0, 25).map((r, i) => (
+                <tr key={i}>
+                  <td>{shortDate(r.interval_start)}</td>
+                  <td>{n(r.earliest_mw)} MW</td>
+                  <td>{n(r.latest_mw)} MW</td>
+                  <td
+                    className={
+                      Number(r.net_revision_mw) >= 0 ? "orange" : "green"
+                    }
+                  >
+                    {Number(r.net_revision_mw) > 0 ? "+" : ""}
+                    {n(r.net_revision_mw)} MW
+                  </td>
+                  <td>{n(r.pct_revision, 1)}%</td>
+                  <td>{r.total_revisions}</td>
+                  <td>
+                    <span
+                      className={`status-pill ${r.subsequent_improved_accuracy ? "good" : "warn"}`}
+                    >
+                      <i />
+                      {r.subsequent_improved_accuracy ? "Improved" : "Worsened"}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+    </>
+  );
+}

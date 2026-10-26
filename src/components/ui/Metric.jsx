@@ -1,1 +1,12 @@
-export function Metric({ label, value, unit, hint, tone }) { return <div className="metric"><div className="metric-label">{label}</div><div className="metric-value">{value}<small>{unit}</small></div><div className={`metric-hint ${tone || ''}`}>{hint}</div></div> }
+export function Metric({ label, value, unit, hint, tone }) {
+  return (
+    <div className="metric">
+      <div className="metric-label">{label}</div>
+      <div className="metric-value">
+        {value}
+        <small>{unit}</small>
+      </div>
+      <div className={`metric-hint ${tone || ""}`}>{hint}</div>
+    </div>
+  );
+}

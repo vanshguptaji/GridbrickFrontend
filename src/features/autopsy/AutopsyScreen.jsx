@@ -1,6 +1,161 @@
-import { Metric, Panel } from '../../components/ui'
-import { demo } from '../../lib/demoData'
-import { n, shortDate } from '../../lib/format'
-export function AutopsyScreen({ autopsy, onReview }) { const misses = autopsy?.largest_misses || demo.slice(0, 10).map((r, i) => ({ ...r, diagnosis: ['Late ramp under-forecast', 'Large offshore revision', 'Persistent over-forecast'][i % 3], wind_tier: ['Mid', 'High', 'Low'][i % 3], percentage_error: 16.2 })); return <><div className="metric-grid compact"><Metric label="Largest misses" value={n(misses.length)} unit="intervals" hint="Ranked by absolute error" tone="negative"/><Metric label="Over-forecast streaks" value={n(autopsy?.overprediction_streaks?.length || 14)} unit="" hint="Persistent positive forecast error"/><Metric label="Under-forecast streaks" value={n(autopsy?.underprediction_streaks?.length || 11)} unit="" hint="Persistent negative forecast error"/><Metric label="Costly revisions" value={n(autopsy?.costly_revisions_count || 37)} unit="" hint="Revision worsened realized error"/></div><Panel title="Largest forecast misses" subtitle="Evidence-linked delivery intervals with the highest absolute error"><div className="table-wrap"><table><thead><tr><th>Delivery interval</th><th>Forecast</th><th>Actual</th><th>Error</th><th>Magnitude</th><th>Wind regime</th><th>Diagnosis</th><th/></tr></thead><tbody>{misses.slice(0, 10).map((r, i) => <tr key={i}><td>{shortDate(r.interval_start)}</td><td>{n(r.forecast_mw)} MW</td><td>{n(r.actual_mw)} MW</td><td className={Number(r.error_mw) > 0 ? 'orange' : 'green'}>{Number(r.error_mw) > 0 ? '+' : ''}{n(r.error_mw)} MW</td><td><b>{n(r.absolute_error_mw)} MW</b></td><td>{r.wind_tier} wind</td><td>{r.diagnosis}</td><td><button className="small-link" onClick={() => onReview(r)}>Review</button></td></tr>)}</tbody></table></div></Panel><div className="two-panels"><Panel title="Persistent error patterns" subtitle="Consecutive settlement intervals"><Streaks title="Over-forecasting" rows={autopsy?.overprediction_streaks} direction="over"/><Streaks title="Under-forecasting" rows={autopsy?.underprediction_streaks} direction="under"/></Panel><Panel title="Wind regime breakdown" subtitle="Error characteristics by generation tier"><div className="regime-list">{(autopsy?.wind_tier_breakdown || [{ tier: 'Low wind', count: 318, mae_mw: 620 }, { tier: 'Mid wind', count: 806, mae_mw: 1100 }, { tier: 'High wind', count: 364, mae_mw: 1900 }]).map((r, i) => <div key={i}><span>{r.tier || r.wind_tier}</span><b>{n(r.count || r.sample_count)} intervals</b><strong>{n(r.mae_mw || r.mae)} MW MAE</strong></div>)}</div><p className="footnote">Wind regimes provide context for repeated misses. They are not causal explanations.</p></Panel></div></> }
+import { Metric, Panel } from "../../components/ui";
+import { demo } from "../../lib/demoData";
+import { n, shortDate } from "../../lib/format";
+export function AutopsyScreen({ autopsy, onReview }) {
+  const misses =
+    autopsy?.largest_misses ||
+    demo
+      .slice(0, 10)
+      .map((r, i) => ({
+        ...r,
+        diagnosis: [
+          "Late ramp under-forecast",
+          "Large offshore revision",
+          "Persistent over-forecast",
+        ][i % 3],
+        wind_tier: ["Mid", "High", "Low"][i % 3],
+        percentage_error: 16.2,
+      }));
+  return (
+    <>
+      <div className="metric-grid compact">
+        <Metric
+          label="Largest misses"
+          value={n(misses.length)}
+          unit="intervals"
+          hint="Ranked by absolute error"
+          tone="negative"
+        />
+        <Metric
+          label="Over-forecast streaks"
+          value={n(autopsy?.overprediction_streaks?.length || 14)}
+          unit=""
+          hint="Persistent positive forecast error"
+        />
+        <Metric
+          label="Under-forecast streaks"
+          value={n(autopsy?.underprediction_streaks?.length || 11)}
+          unit=""
+          hint="Persistent negative forecast error"
+        />
+        <Metric
+          label="Costly revisions"
+          value={n(autopsy?.costly_revisions_count || 37)}
+          unit=""
+          hint="Revision worsened realized error"
+        />
+      </div>
+      <Panel
+        title="Largest forecast misses"
+        subtitle="Evidence-linked delivery intervals with the highest absolute error"
+      >
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Delivery interval</th>
+                <th>Forecast</th>
+                <th>Actual</th>
+                <th>Error</th>
+                <th>Magnitude</th>
+                <th>Wind regime</th>
+                <th>Diagnosis</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {misses.slice(0, 10).map((r, i) => (
+                <tr key={i}>
+                  <td>{shortDate(r.interval_start)}</td>
+                  <td>{n(r.forecast_mw)} MW</td>
+                  <td>{n(r.actual_mw)} MW</td>
+                  <td className={Number(r.error_mw) > 0 ? "orange" : "green"}>
+                    {Number(r.error_mw) > 0 ? "+" : ""}
+                    {n(r.error_mw)} MW
+                  </td>
+                  <td>
+                    <b>{n(r.absolute_error_mw)} MW</b>
+                  </td>
+                  <td>{r.wind_tier} wind</td>
+                  <td>{r.diagnosis}</td>
+                  <td>
+                    <button className="small-link" onClick={() => onReview(r)}>
+                      Review
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+      <div className="two-panels">
+        <Panel
+          title="Persistent error patterns"
+          subtitle="Consecutive settlement intervals"
+        >
+          <Streaks
+            title="Over-forecasting"
+            rows={autopsy?.overprediction_streaks}
+            direction="over"
+          />
+          <Streaks
+            title="Under-forecasting"
+            rows={autopsy?.underprediction_streaks}
+            direction="under"
+          />
+        </Panel>
+        <Panel
+          title="Wind regime breakdown"
+          subtitle="Error characteristics by generation tier"
+        >
+          <div className="regime-list">
+            {(
+              autopsy?.wind_tier_breakdown || [
+                { tier: "Low wind", count: 318, mae_mw: 620 },
+                { tier: "Mid wind", count: 806, mae_mw: 1100 },
+                { tier: "High wind", count: 364, mae_mw: 1900 },
+              ]
+            ).map((r, i) => (
+              <div key={i}>
+                <span>{r.tier || r.wind_tier}</span>
+                <b>{n(r.count || r.sample_count)} intervals</b>
+                <strong>{n(r.mae_mw || r.mae)} MW MAE</strong>
+              </div>
+            ))}
+          </div>
+          <p className="footnote">
+            Wind regimes provide context for repeated misses. They are not
+            causal explanations.
+          </p>
+        </Panel>
+      </div>
+    </>
+  );
+}
 
-export function Streaks({ title, rows, direction }) { const data = rows || [{ start_interval: '2026-01-14T17:00:00Z', end_interval: '2026-01-14T20:00:00Z', duration_half_hours: 7, average_error_mw: direction === 'over' ? 1120 : -940 }]; return <div className="streak-block"><h3><i className={direction}/>{title}</h3>{data.slice(0, 3).map((r, i) => <div className="streak-row" key={i}><span>{shortDate(r.start_interval)}</span><b>{r.duration_half_hours} intervals</b><strong>{n(r.average_error_mw)} MW avg</strong></div>)}</div> }
+export function Streaks({ title, rows, direction }) {
+  const data = rows || [
+    {
+      start_interval: "2026-01-14T17:00:00Z",
+      end_interval: "2026-01-14T20:00:00Z",
+      duration_half_hours: 7,
+      average_error_mw: direction === "over" ? 1120 : -940,
+    },
+  ];
+  return (
+    <div className="streak-block">
+      <h3>
+        <i className={direction} />
+        {title}
+      </h3>
+      {data.slice(0, 3).map((r, i) => (
+        <div className="streak-row" key={i}>
+          <span>{shortDate(r.start_interval)}</span>
+          <b>{r.duration_half_hours} intervals</b>
+          <strong>{n(r.average_error_mw)} MW avg</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
